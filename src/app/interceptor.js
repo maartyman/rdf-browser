@@ -273,7 +273,9 @@ async function fetchDocument(url, store, baseTriplestore, encoding = null, forma
     const accept = getNewAcceptHeader(acceptHeader, false);
     const request = new Request(url, {
         headers: new Headers({
-            'Accept': accept
+            'Accept': accept,
+            'pragma': 'no-cache',
+            'cache-control': 'no-cache'
         })
     });
     try {
@@ -305,6 +307,7 @@ async function fetchDocument(url, store, baseTriplestore, encoding = null, forma
             document.getElementById("#clen").appendChild(document.createTextNode(contentLength));
         }
         response = await response.body;
+        console.log(response)
         if (baseTriplestore === null)
             return await parser.obtainTriplestore(response.getReader(), false, new TextDecoder(encoding), format, true, url);
         else
